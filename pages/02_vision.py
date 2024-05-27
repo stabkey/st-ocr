@@ -3,7 +3,7 @@ import dotenv
 import streamlit as st  
 from openai import AzureOpenAI  
 from PIL import Image  
-from azure.storage.blob import BlobServiceClient
+import base64  
   
 # .envファイルを読み込む  
 dotenv.load_dotenv()  
@@ -16,7 +16,7 @@ client = AzureOpenAI(
 )  
   
 # タイトルを表示する  
-st.title("GPT-4-Turbo Vision のテスト")  
+st.title("GPT-4-Turbo with Vision のテスト")  
   
 # 説明文を表示する  
 st.info("AIが画像に関する質問に答えます。")  
@@ -41,17 +41,11 @@ if uploaded_file is not None:
     # 画像をバイト形式で読み込む  
     image_bytes = uploaded_file.getvalue()  
   
-    # Azure Blob Storage にアップロードする  
-    blob_service_client = BlobServiceClient.from_connection_string(os.getenv("AZURE_STORAGE_CONNECTION_STRING"))  
-    container_name = os.getenv("AZURE_STORAGE_CONTAINER_NAME")  
-    blob_name = uploaded_file.name  
+    # 画像をbase64形式に変換する  
+    image_base64 = base64.b64encode(image_bytes).decode("utf-8")  
   
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)  
-    blob_client.upload_blob(image_bytes, overwrite=True)  
-  
-    # Blob の URL を取得する  
-    blob_url = f"https://{blob_service_client.account_name}.blob.core.windows.net/{container_name}/{blob_name}"  
-    st.write(f"Blob URL: {blob_url}")  
+    # データURL形式に変換する  
+    image_data_url = f"data:image/{uploaded_file.type.split('/')[-1]};base64,{image_base64}"  
   
     # ユーザーの入力を取得する  
     user_input = st.chat_input("画像に関する質問を入力してください。")  
@@ -76,7 +70,7 @@ if uploaded_file is not None:
                         {  
                             "type": "image_url",  
                             "image_url": {  
-                                "url": blob_url  
+                                "url": image_data_url  
                             }  
                         },  
                         {  

@@ -1,6 +1,6 @@
 # Azure とStreamlitを用いた画像認識アプリ  
    
-このアプリは、Azure OpenAIとAzure Blob Storageを利用して、画像に関する質問に答えるStreamlitアプリケーションです。アップロードされた画像をAzure Blob Storageに保存し、その画像に関する質問をAzure OpenAIを使って回答します。本READMEはAIによって作成されました。  
+このアプリは、Azure OpenAIを利用して、画像に関する質問に答えるStreamlitアプリケーションです。アップロードされた画像に関する質問をAzure OpenAIを使って回答します。本READMEはAIによって作成されました。  
    
 ## 必要な環境変数  
    
@@ -14,8 +14,6 @@ AZURE_OPENAI_GPT4O_API_KEY=your_gpt4o_api_key
 AZURE_OPENAI_GPT4O_ENDPOINT=your_gpt4o_endpoint  
 AZURE_COMPUTER_VISION_ENDPOINT=your_azure_computer_vision_endpoint  
 AZURE_COMPUTER_VISION_KEY=your_azure_computer_vision_key  
-AZURE_STORAGE_CONNECTION_STRING=your_azure_storage_connection_string  
-AZURE_STORAGE_CONTAINER_NAME=your_azure_storage_container_name  
 ```  
    
 ## 必要な依存関係  
@@ -24,7 +22,6 @@ AZURE_STORAGE_CONTAINER_NAME=your_azure_storage_container_name
    
 - streamlit  
 - openai  
-- azure-storage-blob  
 - azure-cognitiveservices-vision-computervision  
 - msrest  
 - python-dotenv  
@@ -55,8 +52,6 @@ AZURE_OPENAI_GPT4O_API_KEY=your_gpt4o_api_key
 AZURE_OPENAI_GPT4O_ENDPOINT=your_gpt4o_endpoint  
 AZURE_COMPUTER_VISION_ENDPOINT=your_azure_computer_vision_endpoint  
 AZURE_COMPUTER_VISION_KEY=your_azure_computer_vision_key  
-AZURE_STORAGE_CONNECTION_STRING=your_azure_storage_connection_string  
-AZURE_STORAGE_CONTAINER_NAME=your_azure_storage_container_name  
 ```  
    
 ## 実行  
@@ -74,9 +69,8 @@ streamlit run app.py
 このアプリケーションは、ユーザーがアップロードした画像に対して質問を行い、その質問に対する回答を提供します。具体的な機能は以下の通りです：  
    
 1. **画像のアップロード**: ユーザーはローカルから画像をアップロードします。  
-2. **Azure Blob Storageへの保存**: アップロードされた画像はAzure Blob Storageに保存されます。  
-3. **質問の入力**: ユーザーは画像に関する質問を入力します。  
-4. **質問への回答**: Azure OpenAIサービスを使用して、画像に関する質問に回答します。  
+2. **質問の入力**: ユーザーは画像に関する質問を入力します。  
+3. **質問への回答**: Azure OpenAIサービスを使用して、画像に関する質問に回答します。  
    
 ## トラブルシューティング  
    

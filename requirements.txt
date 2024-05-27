@@ -1,6 +1,5 @@
 streamlit  
 openai  
-azure-storage-blob  
 azure-cognitiveservices-vision-computervision  
 msrest  
 python-dotenv  

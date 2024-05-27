@@ -3,7 +3,6 @@ import dotenv
 import streamlit as st  
 from openai import AzureOpenAI  
 from PIL import Image  
-from azure.storage.blob import BlobServiceClient  
 import base64  
   
 # .envファイルを読み込む  
@@ -11,9 +10,9 @@ dotenv.load_dotenv()
   
 # Azure OpenAI のクライアントを作成する  
 client = AzureOpenAI(  
-    api_key=os.getenv("AZURE_OPENAI_GPT4O_API_KEY"), 
+    api_key=os.getenv("AZURE_OPENAI_GPT4O_API_KEY"),  
     api_version="2024-02-01",  
-    azure_endpoint=os.getenv("AZURE_OPENAI_GPT4O_ENDPOINT")
+    azure_endpoint=os.getenv("AZURE_OPENAI_GPT4O_ENDPOINT")  
 )  
   
 # タイトルを表示する  
@@ -41,25 +40,16 @@ if uploaded_file is not None:
   
     # 画像をバイト形式で読み込む  
     image_bytes = uploaded_file.getvalue()  
-      
+  
     # 画像をbase64形式に変換する  
     image_base64 = base64.b64encode(image_bytes).decode("utf-8")  
-      
-    # Azure Blob Storage にアップロードする  
-    blob_service_client = BlobServiceClient.from_connection_string(os.getenv("AZURE_STORAGE_CONNECTION_STRING"))  
-    container_name = os.getenv("AZURE_STORAGE_CONTAINER_NAME")  
-    blob_name = uploaded_file.name  
-      
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)  
-    blob_client.upload_blob(image_bytes, overwrite=True)  
-      
-    # Blob の URL を取得する  
-    blob_url = f"https://{blob_service_client.account_name}.blob.core.windows.net/{container_name}/{blob_name}"  
-    st.write(f"Blob URL: {blob_url}")  
+  
+    # データURL形式に変換する  
+    image_data_url = f"data:image/{uploaded_file.type.split('/')[-1]};base64,{image_base64}"  
   
     # ユーザーの入力を取得する  
     user_input = st.chat_input("画像に関する質問を入力してください。")  
-      
+  
     # チャットを送信した際の処理  
     if user_input:  
         # ユーザーが入力した検索キーワードを表示する  
@@ -80,7 +70,7 @@ if uploaded_file is not None:
                         {  
                             "type": "image_url",  
                             "image_url": {  
-                                "url": blob_url  
+                                "url": image_data_url  
                             }  
                         },  
                         {  
@@ -92,11 +82,11 @@ if uploaded_file is not None:
             ],  
             max_tokens=2000  
         )  
-          
+  
         # 結果を表示  
         with st.chat_message("assistant"):  
             st.write(chat_completion.choices[0].message.content)  
-          
-       # 履歴に追加する
-        st.session_state.history.append({"role": "user", "content": user_input})
-        st.session_state.history.append({"role": "assistant", "content": chat_completion.choices[0].message.content})
+  
+        # 履歴に追加する  
+        st.session_state.history.append({"role": "user", "content": user_input})  
+        st.session_state.history.append({"role": "assistant", "content": chat_completion.choices[0].message.content})  
