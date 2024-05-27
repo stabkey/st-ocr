@@ -11,7 +11,7 @@ import os
 # .envファイルを読み込む  
 dotenv.load_dotenv()  
   
-# Azure AI VisionのAPIキーとエンドポイントを環境変数から取得  
+# Azure Computer VisionのAPIキーとエンドポイントを環境変数から取得  
 subscription_key = os.getenv("AZURE_COMPUTER_VISION_KEY")  
 endpoint = os.getenv("AZURE_COMPUTER_VISION_ENDPOINT")  
   
@@ -19,7 +19,7 @@ endpoint = os.getenv("AZURE_COMPUTER_VISION_ENDPOINT")
 computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))  
   
 # Streamlitアプリのヘッダー  
-st.title("Azure AI Vision OCR")  
+st.title("OCRのテスト")  
 
 # アプリの説明
 st.info("画像に含まれるテキストを読み取ります。")
