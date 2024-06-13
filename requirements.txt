@@ -4,3 +4,7 @@ azure-cognitiveservices-vision-computervision
 msrest  
 python-dotenv  
 pillow  
+azure-ai-formrecognizer
+
+pymupdf  
+pdf2image
